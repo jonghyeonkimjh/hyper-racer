@@ -5,14 +5,20 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+  // 프리팹
   [SerializeField] private GameObject carPrefab;
   [SerializeField] private GameObject roadPrefab;
-  
+
+
+  // UI 관련
   [SerializeField] private MoveButton leftMoveButton;
   [SerializeField] private MoveButton rightMoveButton;
   
+  // 로드 오브젝트 풀
   private int _roadPoolSize = 3;
   private Queue<GameObject> _roadPool = new Queue<GameObject>();
+  
+  // 도로 이동
   private List<GameObject> _activeRoads = new List<GameObject>();
   
   
@@ -110,6 +116,16 @@ public class GameManager : MonoBehaviour
     }
   }
 
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <param name="road"></param>
+  public void DespawnRoad(GameObject road)
+  {
+    road.SetActive(false);
+    _activeRoads.Remove(road);
+    _roadPool.Enqueue(road);
+  }
   #endregion
   
 }
