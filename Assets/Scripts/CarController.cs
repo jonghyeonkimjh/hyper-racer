@@ -5,14 +5,9 @@ using UnityEngine;
 public class CarController : MonoBehaviour
 {
     // Start is called before the first frame update
-    void Start()
+    public void Move(float direction)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        // wheel collider를 쓰는 방법과 velocity를 쓰는 방법 position을 변경하는 방법 
+        transform.Translate(Vector3.right * (direction * Time.deltaTime));
     }
 }
