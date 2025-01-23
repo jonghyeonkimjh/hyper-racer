@@ -661,6 +661,7 @@ MonoBehaviour:
   roadPrefab: {fileID: 1133966233866434840, guid: 9b4e0907cd79b584383915568d267468, type: 3}
   leftMoveButton: {fileID: 234537698}
   rightMoveButton: {fileID: 845925658}
+  gasText: {fileID: 250174785}
 --- !u!4 &1214291408
 Transform:
   m_ObjectHideFlags: 0
