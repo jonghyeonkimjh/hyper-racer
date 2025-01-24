@@ -58,6 +58,8 @@ public class GameManager : MonoBehaviour
     {
       _instance = this;
     }
+
+    Time.timeScale = 5f; // 0 stop game
   }
 
   private void Start()
@@ -162,6 +164,7 @@ public class GameManager : MonoBehaviour
     //가스 아이템 생성
     if (_roadIndex > 0 && _roadPool.Count%2 == 0)
     {
+      Debug.Log($"load index, {_roadIndex}");
       road.GetComponent<RoadController>().SpawnGas();
     }
     

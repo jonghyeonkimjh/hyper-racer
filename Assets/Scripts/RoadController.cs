@@ -16,6 +16,13 @@ public class RoadController : MonoBehaviour
             gasObject.SetActive(false);
         }
     }
+    private void OnDisable()
+    {
+        foreach (var gasObject in gasObjects)
+        {
+            gasObject.SetActive(false);
+        }
+    }
 
     /// <summary>
     /// 플레이어 차량이 도로에 진입하면 다음 도로를 생성
