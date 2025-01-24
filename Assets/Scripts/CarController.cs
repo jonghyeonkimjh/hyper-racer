@@ -7,7 +7,6 @@ public class CarController : MonoBehaviour
 {
     [SerializeField] private int gas = 100;
     [SerializeField] private float moveSpeed = 1f;
-    // Start is called before the first frame update
     public int Gas => gas;
 
     private void Start()
@@ -23,7 +22,7 @@ public class CarController : MonoBehaviour
             if (gas <= 0) break;
             yield return new WaitForSeconds(1);
         }
-        //TODO: 게임 종료
+        GameManager.Instance.EndGame();
     }
 
     /// <summary>
@@ -46,7 +45,9 @@ public class CarController : MonoBehaviour
         if (other.CompareTag("Gas"))
         {
             gas += 30;
-            // TODO: 가스 아이템 제거
+            
+            //가스 아이템 숨기기
+            other.gameObject.SetActive(false);
         }
     }
 }
