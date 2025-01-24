@@ -29,6 +29,8 @@ public class GameManager : MonoBehaviour
   
   // 도로 이동
   private List<GameObject> _activeRoads = new List<GameObject>();
+  
+  // 만들어지는 도로의 index
   private int _roadIndex;
   
   // 상태
@@ -91,7 +93,6 @@ public class GameManager : MonoBehaviour
       case State.Start:
         break;
       case State.Play:
-        
         // 게임 진행 시간이 증가 할수록 난이도 증가
         ElapsedTime += Time.deltaTime;
         if ((int)ElapsedTime % 10 == 0 && ElapsedTime > 0)
@@ -119,6 +120,7 @@ public class GameManager : MonoBehaviour
     Difficulty = 1;
     ElapsedTime = 0;
     _roadIndex = 0;
+
     // 도로 생성
     SpawnRoad(Vector3.zero);
     
@@ -138,18 +140,18 @@ public class GameManager : MonoBehaviour
   {
     GameState = State.End;
     
+    leftMoveButton.OnMoveButtonDown -= _carController.MoveLeft;
+    rightMoveButton.OnMoveButtonDown -= _carController.MoveRight;
+    
     //자동차 제거
     Destroy(_carController.gameObject);
     
     //도로 제거
-    
     foreach (var activeRoad in _activeRoads)
     {
       activeRoad.SetActive(false);
     }
 
-    leftMoveButton.OnMoveButtonDown -= _carController.MoveLeft;
-    rightMoveButton.OnMoveButtonDown -= _carController.MoveRight;
     // 게임 오버 화면 표시
     ShowEndPanel();
   }

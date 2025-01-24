@@ -60,7 +60,7 @@ public class CarController : MonoBehaviour
     {
         if (other.CompareTag("Gas"))
         {
-            gas += 200;
+            gas += 100;
             
             //가스 아이템 숨기기
             other.gameObject.SetActive(false);
