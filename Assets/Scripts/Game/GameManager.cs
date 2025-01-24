@@ -127,7 +127,7 @@ public class GameManager : MonoBehaviour
     {
       activeRoad.SetActive(false);
     }
-    
+
     // 게임 오버 화면 표시
     ShowEndPanel();
   }

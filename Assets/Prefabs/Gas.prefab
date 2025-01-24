@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7289166164774406213}
   - component: {fileID: 1040954185286380154}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Gas
   m_TagString: Gas
   m_Icon: {fileID: 0}
@@ -65,7 +65,7 @@ GameObject:
   - component: {fileID: 3084337445057941356}
   - component: {fileID: 6355239287008990525}
   - component: {fileID: 30012758992025919}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Gas Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
