@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
   [SerializeField] private MoveButton leftMoveButton;
   [SerializeField] private MoveButton rightMoveButton;
   [SerializeField] private TMP_Text gasText;
+  [SerializeField] private TMP_Text difficultyText;
+  [SerializeField] private TMP_Text elapsedTimeText;
   [SerializeField] private GameObject startPanelPrefab;
   [SerializeField] private GameObject endPanelPrefab;
   [SerializeField] private Transform canvasTransform;
@@ -35,6 +37,12 @@ public class GameManager : MonoBehaviour
     Start,Play,End
   }
   public State GameState { get; private set; } = State.Start;
+
+  // 게임 진행 시간
+  public float ElapsedTime { get; private set; }
+
+  // 게임 난이도
+  public int Difficulty { get; private set; }
   
   // 싱글턴
   private static GameManager _instance;
@@ -61,7 +69,7 @@ public class GameManager : MonoBehaviour
       _instance = this;
     }
 
-    Time.timeScale = 5f; // 0 stop game
+    // Time.timeScale = 5f; // 0 stop game
   }
 
   private void Start()
@@ -83,12 +91,22 @@ public class GameManager : MonoBehaviour
       case State.Start:
         break;
       case State.Play:
+        
+        // 게임 진행 시간이 증가 할수록 난이도 증가
+        ElapsedTime += Time.deltaTime;
+        if ((int)ElapsedTime % 10 == 0 && ElapsedTime > 0)
+        {
+          // 10초마다 난이도 증가, 최대 Level 20
+          Difficulty = Math.Clamp((int)ElapsedTime / 10 + 1, 0, 20);
+        }
         foreach (var activeRoad in _activeRoads)
         {
-          activeRoad.transform.Translate(Vector3.back * Time.deltaTime);
+          // 게임 시간이 증가할수록 도로의 속도도 빨라짐
+          activeRoad.transform.Translate(Time.deltaTime* Difficulty * Vector3.back);
         }
-    
-        if (_carController != null) gasText.text = _carController.Gas.ToString();
+        if (_carController != null) gasText.text = $"{_carController.Gas}";
+        if (_carController != null) elapsedTimeText.text = $"{(int)ElapsedTime}s";
+        if (_carController != null) difficultyText.text = $"LEVEL {Difficulty}";
         break;
       case State.End:
         break;
@@ -98,6 +116,8 @@ public class GameManager : MonoBehaviour
   private void StartGame()
   {
     // _roadIndex 초기화
+    Difficulty = 1;
+    ElapsedTime = 0;
     _roadIndex = 0;
     // 도로 생성
     SpawnRoad(Vector3.zero);
@@ -107,8 +127,8 @@ public class GameManager : MonoBehaviour
       .GetComponent<CarController>();
     
     // Left, Right move button에 자동차 컨트롤 기능 적용
-    leftMoveButton.OnMoveButtonDown += () => _carController.Move(-1f);
-    rightMoveButton.OnMoveButtonDown += () => _carController.Move(1f);
+    leftMoveButton.OnMoveButtonDown += _carController.MoveLeft;
+    rightMoveButton.OnMoveButtonDown += _carController.MoveRight;
     
     // 게임 상태를 Play로 변경
     GameState = State.Play;
@@ -128,6 +148,8 @@ public class GameManager : MonoBehaviour
       activeRoad.SetActive(false);
     }
 
+    leftMoveButton.OnMoveButtonDown -= _carController.MoveLeft;
+    rightMoveButton.OnMoveButtonDown -= _carController.MoveRight;
     // 게임 오버 화면 표시
     ShowEndPanel();
   }
@@ -193,16 +215,23 @@ public class GameManager : MonoBehaviour
       road = Instantiate(roadPrefab, position, Quaternion.identity);
     }
     
-    //가스 아이템 생성
-    if (_roadIndex > 0 && _roadPool.Count%2 == 0)
+    //가스 아이템 및 적 차량 생성
+    if (_roadIndex > 0 && _roadIndex%2 == 0)
     {
       road.GetComponent<RoadController>().SpawnGas();
     }
+    
+    if (_roadIndex > 0 && _roadIndex%3 == 0)
+    {
+      road.GetComponent<RoadController>().SpawnEnemy();
+    }
+    
     
     // 활성화 된 길을 움직이기 위해 List에 저장
     _activeRoads.Add(road);
     _roadIndex++;
   }
+  
 
   /// <summary>
   /// 

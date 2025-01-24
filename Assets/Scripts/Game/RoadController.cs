@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 public class RoadController : MonoBehaviour
 {
     [SerializeField] private GameObject[] gasObjects;
+    [SerializeField] private GameObject[] enemyObjects;
 
     private void OnEnable()
     {
@@ -14,6 +15,12 @@ public class RoadController : MonoBehaviour
         foreach (var gasObject in gasObjects)
         {
             gasObject.SetActive(false);
+        }
+        
+        // 모든 적 비활성화
+        foreach (var enemyObject in enemyObjects)
+        {
+            enemyObject.SetActive(false);
         }
     }
 
@@ -48,5 +55,14 @@ public class RoadController : MonoBehaviour
     {
         var randomIndex = Random.Range(0, gasObjects.Length);
         gasObjects[randomIndex].SetActive(true);
+    }
+    
+    /// <summary>
+    /// 랜덤으로 척 차량 표시
+    /// </summary>
+    public void SpawnEnemy()
+    {
+        var randomIndex = Random.Range(0, enemyObjects.Length);
+        enemyObjects[randomIndex].SetActive(true);
     }
 }
