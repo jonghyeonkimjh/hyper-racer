@@ -8,16 +8,9 @@ public class RoadController : MonoBehaviour
 {
     [SerializeField] private GameObject[] gasObjects;
 
-    private void Start()
+    private void OnEnable()
     {
         // 모든 가스 아이템 비활성화
-        foreach (var gasObject in gasObjects)
-        {
-            gasObject.SetActive(false);
-        }
-    }
-    private void OnDisable()
-    {
         foreach (var gasObject in gasObjects)
         {
             gasObject.SetActive(false);
