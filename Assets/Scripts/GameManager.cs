@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
   
   // 도로 이동
   private List<GameObject> _activeRoads = new List<GameObject>();
-  private int _roadIndex = 0;
+  private int _roadIndex;
   
   // 상태
   public enum State
@@ -97,6 +97,8 @@ public class GameManager : MonoBehaviour
 
   private void StartGame()
   {
+    // _roadIndex 초기화
+    _roadIndex = 0;
     // 도로 생성
     SpawnRoad(Vector3.zero);
     
